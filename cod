@@ -1,8 +1,0 @@
-import requests
-from bs4 import BeautifulSoup
-
-def scrape_website(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    data = soup.find_all("h2")  # Exemplo: coletando títulos
-    return [item.text for item in data]
