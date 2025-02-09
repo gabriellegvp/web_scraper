@@ -4,28 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Scraper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            color: #444;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="url"] {
+            width: 300px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .loading {
+            display: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>Bem-vindo ao Web Scraper</h1>
     <form id="scrape-form">
         <label for="url">URL:</label>
-        <input type="url" id="url" name="url" required>
+        <input type="url" id="url" name="url" required placeholder="https://example.com">
         <button type="submit">Scrapear</button>
+        <span class="loading" id="loading">Scrapeando...</span>
     </form>
     <div id="results"></div>
 
     <script>
         const form = document.getElementById("scrape-form");
+        const resultsDiv = document.getElementById("results");
+        const loadingSpan = document.getElementById("loading");
+
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const url = document.getElementById("url").value;
-            const response = await fetch("/scrape", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url }),
-            });
-            const data = await response.json();
-            document.getElementById("results").innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+
+            // Validação simples da URL
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                resultsDiv.innerHTML = `<div class="error">Por favor, insira uma URL válida (comece com http:// ou https://).</div>`;
+                return;
+            }
+
+            // Mostra o indicador de carregamento
+            loadingSpan.style.display = "inline";
+            resultsDiv.innerHTML = "";
+
+            try {
+                const response = await fetch("/scrape", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                resultsDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="error">Erro ao scrapear a URL: ${error.message}</div>`;
+            } finally {
+                // Esconde o indicador de carregamento
+                loadingSpan.style.display = "none";
+            }
         });
     </script>
 </body>
