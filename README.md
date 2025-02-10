@@ -1,29 +1,32 @@
 # Web Scraper com Backend
 
-Um projeto de web scraping desenvolvido com BeautifulSoup e Flask, projetado para coletar dados de páginas web e disponibilizá-los por meio de uma API.
+Um projeto de web scraping desenvolvido com **BeautifulSoup** e **Flask**, projetado para coletar dados de páginas web e disponibilizá-los por meio de uma API RESTful. Ideal para extrair informações estruturadas de sites e exportá-las em formatos como JSON ou CSV.
 
-## Recursos
-- Extração de dados estruturados de sites.
-- API para consultar os dados extraídos.
-- Exportação de dados para formatos como JSON ou CSV.
+---
+
+## Recursos Principais
+
+- **Extração de dados estruturados**: Coleta de elementos HTML como títulos (`h1`, `h2`), parágrafos (`p`), links (`a`), etc.
+- **API RESTful**: Endpoints para realizar scraping e consultar os dados extraídos.
+- **Exportação de dados**: Suporte para exportar dados em JSON ou CSV.
+- **Cache de requisições**: Evita requisições repetidas à mesma URL.
+- **Autenticação básica**: Proteção de endpoints sensíveis.
+- **Logs de requisições**: Registro de todas as operações para auditoria.
+
+---
+
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter instalado:
+
+- Python 3.8 ou superior
+- pip (gerenciador de pacotes do Python)
+
+---
 
 ## Como Configurar
-1. Clone o repositório:  
-   git clone <url-do-repositorio>
-2. Instale as dependências:  
-   pip install -r requirements.txt
-3. Execute o servidor:  
-   flask run
 
-## Endpoints Principais
-- POST /scrape  
-  Entrada: URL do site para scraping.  
-  Saída: Dados extraídos.  
-
-- GET /data  
-  Retorna os dados extraídos em JSON.  
-
-## Exemplos
-1. Solicite o scraping de um site:  
+1. **Clone o repositório**:
    ```bash
-   curl -X POST http://localhost:5000/scrape -d '{"url": "https://exemplo.com"}'
+   git clone https://github.com/gabriellegvp/web_scraper.git
+   cd web_scraper
